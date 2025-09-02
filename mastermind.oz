@@ -414,15 +414,15 @@ class CodeBreaker
       [] 'smart' then
          local
             fun {GenerateSmartGuess}
-               case @guessHistory of nil then
+               case @feedbackHistory of nil then
                   [red red blue blue]
-               [] H|T then
+               [] H|_ then
                   case H.feedback of nil then [red red blue blue]
                   else
                      local
                         fun {FindBestGuess}
                            case @availableColors of nil then [red red blue blue]
-                           [] C|Rest then
+                           [] C|_ then
                               local
                                  fun {SafeNth List N Default}
                                     if {Length List} >= N then {Nth List N}
