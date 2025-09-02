@@ -1,3 +1,5 @@
+declare
+
 %% Matrix Class Definition
 %% Represents a square matrix with operations for rows, columns, and entire matrix
 class Matrix
@@ -10,7 +12,8 @@ class Matrix
       %%                            All rows must have equal length to form a square matrix
       %% Precondition: Data must represent a valid square matrix (N×N where N > 0)
       %% Side effects: Initializes @data and @size attributes
-      %% Your code here
+      data := Data
+      size := {Length Data}
    end
    
    meth init(Size Value) 
@@ -18,14 +21,28 @@ class Matrix
       %% Input: Size :: Int - Integer N for creating an N×N matrix (must be > 0)
       %%        Value :: Int - Value to fill all matrix positions
       %% Side effects: Initializes @data and @size attributes
-      %% Your code here  
+      local
+         fun {CreateRow N Val}
+            if N == 0 then nil
+            else Val | {CreateRow N-1 Val}
+            end
+         end
+         fun {CreateMatrix N Val}
+            if N == 0 then nil
+            else {CreateRow Size Val} | {CreateMatrix N-1 Val}
+            end
+         end
+      in
+         size := Size
+         data := {CreateMatrix Size Value}
+      end
    end
    
    meth getSize(?Result)
       %% Returns the size N of the N×N matrix
       %% Input: None
       %% Output: Result :: Int - The dimension N of the N×N matrix
-      %% Your code here
+      Result = @size
    end
    
    meth getElement(Row Col ?Result)
@@ -34,7 +51,20 @@ class Matrix
       %%        Col :: Int - Column index (1 ≤ Col ≤ N)
       %% Output: Result :: Int - Element at position (Row, Col)
       %% Note: If Row and Col are not valide within the matrix size return 142857
-      %% Your code here
+      if Row >= 1 andthen Row =< @size andthen Col >= 1 andthen Col =< @size then
+         local
+            fun {GetNth List N}
+               if N == 1 then {List.1}
+               else {GetNth List.2 N-1}
+               end
+            end
+            RowList = {GetNth @data Row}
+         in
+            Result = {GetNth RowList Col}
+         end
+      else
+         Result = 142857
+      end
    end
    
    meth getRow(RowIndex ?Result)
@@ -42,7 +72,19 @@ class Matrix
       %% Input: RowIndex :: Int - Row number (1 ≤ RowIndex ≤ N)
       %% Output: Result :: [Int] - List containing all elements of the specified row
       %% Note: If RowIndex is not valide within the matrix size return 142857
-      %% Your code here
+      if RowIndex >= 1 andthen RowIndex =< @size then
+         local
+            fun {GetNth List N}
+               if N == 1 then List.1
+               else {GetNth List.2 N-1}
+               end
+            end
+         in
+            Result = {GetNth @data RowIndex}
+         end
+      else
+         Result = 142857
+      end
    end
    
    meth getColumn(ColIndex ?Result)
@@ -50,7 +92,25 @@ class Matrix
       %% Input: ColIndex :: Int - Column number (1 ≤ ColIndex ≤ N)  
       %% Output: Result :: [Int] - List containing all elements of the specified column
       %% Note: If ColIndex is not valide within the matrix size return 142857
-      %% Your code here
+      if ColIndex >= 1 andthen ColIndex =< @size then
+         local
+            fun {GetNth List N}
+               if N == 1 then List.1
+               else {GetNth List.2 N-1}
+               end
+            end
+            fun {ExtractColumn Matrix Col}
+               case Matrix of nil then nil
+               [] Row|Rest then
+                  {GetNth Row Col} | {ExtractColumn Rest Col}
+               end
+            end
+         in
+            Result = {ExtractColumn @data ColIndex}
+         end
+      else
+         Result = 142857
+      end
    end
    
    meth sumRow(RowIndex ?Result)
@@ -59,7 +119,21 @@ class Matrix
       %% Output: Result :: Int - Arithmetic sum of all elements in the row
       %% Precondition: RowIndex is valid within the Matrix size
       %% Note: If RowIndex is not valide within the matrix size return 142857
-      %% Your code here
+      if RowIndex >= 1 andthen RowIndex =< @size then
+         local
+            fun {SumList List}
+               case List of nil then 0
+               [] H|T then H + {SumList T}
+               end
+            end
+            RowList
+         in
+            {self getRow(RowIndex RowList)}
+            Result = {SumList RowList}
+         end
+      else
+         Result = 142857
+      end
    end
    
    meth productRow(RowIndex ?Result)
@@ -67,7 +141,21 @@ class Matrix
       %% Input: RowIndex :: Int - Row number (1 ≤ RowIndex ≤ N)
       %% Output: Result :: Int - Arithmetic product of all elements in the row
       %% Note: If RowIndex is not valide within the matrix size return 142857
-      %% Your code here
+      if RowIndex >= 1 andthen RowIndex =< @size then
+         local
+            fun {ProductList List}
+               case List of nil then 1
+               [] H|T then H * {ProductList T}
+               end
+            end
+            RowList
+         in
+            {self getRow(RowIndex RowList)}
+            Result = {ProductList RowList}
+         end
+      else
+         Result = 142857
+      end
    end
    
    meth sumColumn(ColIndex ?Result)
@@ -75,7 +163,21 @@ class Matrix
       %% Input: ColIndex :: Int - Column number (1 ≤ ColIndex ≤ N)
       %% Output: Result :: Int - Arithmetic sum of all elements in the column
       %% Note: If ColIndex is not valide within the matrix size return 142857
-      %% Your code here
+      if ColIndex >= 1 andthen ColIndex =< @size then
+         local
+            fun {SumList List}
+               case List of nil then 0
+               [] H|T then H + {SumList T}
+               end
+            end
+            ColList
+         in
+            {self getColumn(ColIndex ColList)}
+            Result = {SumList ColList}
+         end
+      else
+         Result = 142857
+      end
    end
    
    meth productColumn(ColIndex ?Result)
@@ -83,7 +185,21 @@ class Matrix
       %% Input: ColIndex :: Int - Column number (1 ≤ ColIndex ≤ N)
       %% Output: Result :: Int - Arithmetic product of all elements in the column
       %% Note: If ColIndex is not valide within the matrix size return 142857
-      %% Your code here
+      if ColIndex >= 1 andthen ColIndex =< @size then
+         local
+            fun {ProductList List}
+               case List of nil then 1
+               [] H|T then H * {ProductList T}
+               end
+            end
+            ColList
+         in
+            {self getColumn(ColIndex ColList)}
+            Result = {ProductList ColList}
+         end
+      else
+         Result = 142857
+      end
    end
    
    meth sumAll(?Result)
@@ -91,7 +207,24 @@ class Matrix
       %% Input: None
       %% Output: Result :: Int - Arithmetic sum of all matrix elements
       %% Note: Returns 0 for empty matrix
-      %% Your code here
+      local
+         fun {SumMatrix Matrix}
+            case Matrix of nil then 0
+            [] Row|Rest then
+               local
+                  fun {SumList List}
+                     case List of nil then 0
+                     [] H|T then H + {SumList T}
+                     end
+                  end
+               in
+                  {SumList Row} + {SumMatrix Rest}
+               end
+            end
+         end
+      in
+         Result = {SumMatrix @data}
+      end
    end
    
    meth productAll(?Result) 
@@ -99,7 +232,24 @@ class Matrix
       %% Input: None
       %% Output: Result :: Int - Arithmetic product of all matrix elements
       %% Note: Returns 1 for empty matrix, returns 0 if any element is 0
-      %% Your code here
+      local
+         fun {ProductMatrix Matrix}
+            case Matrix of nil then 1
+            [] Row|Rest then
+               local
+                  fun {ProductList List}
+                     case List of nil then 1
+                     [] H|T then H * {ProductList T}
+                     end
+                  end
+               in
+                  {ProductList Row} * {ProductMatrix Rest}
+               end
+            end
+         end
+      in
+         Result = {ProductMatrix @data}
+      end
    end
    
    %% Utility methods
@@ -108,6 +258,24 @@ class Matrix
       %%    Any format is valid, just must display all the matrix content
       %% Input: None
       %% Output: None (void)
-      %% Your code here
+      local
+         proc {PrintRow Row}
+            case Row of nil then {System.showInfo ""}
+            [] H|T then
+               {System.print H # " "}
+               {PrintRow T}
+            end
+         end
+         proc {PrintMatrix Matrix}
+            case Matrix of nil then skip
+            [] Row|Rest then
+               {PrintRow Row}
+               {PrintMatrix Rest}
+            end
+         end
+      in
+         {System.showInfo "Matrix (" # @size # "x" # @size # "):"}
+         {PrintMatrix @data}
+      end
    end
 end
