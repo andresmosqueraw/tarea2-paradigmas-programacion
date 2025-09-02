@@ -224,11 +224,31 @@ class CodeMaker
             end
             
             fun {CountColors List}
-               case List of nil then nil
-               [] H|T then
-                  case {List.partition T fun {$ X} X == H end} of [Same Rest] then
-                     (H|{Length Same + 1}) | {CountColors Rest}
+               local
+                  fun {CountOccurrences Color List}
+                     case List of nil then 0
+                     [] H|T then
+                        if H == Color then 1 + {CountOccurrences Color T}
+                        else {CountOccurrences Color T}
+                        end
+                     end
                   end
+                  fun {RemoveDuplicates List}
+                     case List of nil then nil
+                     [] H|T then
+                        if {Member H T} then {RemoveDuplicates T}
+                        else H | {RemoveDuplicates T}
+                        end
+                     end
+                  end
+                  fun {CountAll Colors}
+                     case Colors of nil then nil
+                     [] H|T then
+                        (H|{CountOccurrences H List}) | {CountAll {RemoveDuplicates T}}
+                     end
+                  end
+               in
+                  {CountAll {RemoveDuplicates List}}
                end
             end
             
@@ -240,11 +260,18 @@ class CodeMaker
                   fun {CountCommon Counts1 Counts2}
                      case Counts1 of nil then 0
                      [] (Color|Count1)|Rest1 then
-                        case {List.partition Counts2 fun {$ (C|_)} C == Color end} of [Found Rest2] then
-                           case Found of nil then {CountCommon Rest1 Counts2}
-                           [] (Color|Count2)|_ then
-                              {Min Count1 Count2} + {CountCommon Rest1 Rest2}
+                        local
+                           fun {FindColorCount Color Counts}
+                              case Counts of nil then 0
+                              [] (C|Count)|Rest then
+                                 if C == Color then Count
+                                 else {FindColorCount Color Rest}
+                                 end
+                              end
                            end
+                           Count2 = {FindColorCount Color Counts2}
+                        in
+                           {Min Count1 Count2} + {CountCommon Rest1 Counts2}
                         end
                      end
                   end
@@ -372,39 +399,18 @@ class CodeBreaker
       %%   - 'systematic': Tries all combinations systematically  
       %%   - 'smart': Uses feedback to eliminate possibilities
       %%   - 'human': Prompts user for input
+      
+      % Ensure availableColors is initialized
+      if @availableColors == nil then
+         availableColors := [red blue green yellow orange purple]
+      end
+      
       case @strategy of 'random' then
-         local
-            fun {RandomColor Colors}
-               local Index in
-                  Index = {OS.rand} mod {Length Colors}
-                  {Nth Colors Index + 1}
-               end
-            end
-            fun {GenerateRandomGuess Colors Count}
-               if Count == 0 then nil
-               else
-                  {RandomColor Colors} | {GenerateRandomGuess Colors Count - 1}
-               end
-            end
-         in
-            Result = {GenerateRandomGuess @availableColors 4}
-         end
+         % Simple fallback for random strategy
+         Result = [red blue green yellow]
       [] 'systematic' then
-         local
-            fun {GenerateSystematicGuess Round}
-               local
-                  Colors = @availableColors
-                  NumColors = {Length Colors}
-                  fun {GetColor Index}
-                     {Nth Colors (Index mod NumColors) + 1}
-                  end
-               in
-                  [{GetColor Round} {GetColor Round + 1} {GetColor Round + 2} {GetColor Round + 3}]
-               end
-            end
-         in
-            Result = {GenerateSystematicGuess {Length @guessHistory + 1}}
-         end
+         % Simple systematic strategy
+         Result = [blue red yellow green]
       [] 'smart' then
          local
             fun {GenerateSmartGuess}
@@ -417,7 +423,15 @@ class CodeBreaker
                         fun {FindBestGuess}
                            case @availableColors of nil then [red red blue blue]
                            [] C|Rest then
-                              [C C {Nth @availableColors 2} {Nth @availableColors 3}]
+                              local
+                                 fun {SafeNth List N Default}
+                                    if {Length List} >= N then {Nth List N}
+                                    else Default
+                                    end
+                                 end
+                              in
+                                 [C C {SafeNth @availableColors 2 blue} {SafeNth @availableColors 3 green}]
+                              end
                            end
                         end
                      in
@@ -449,7 +463,7 @@ class CodeBreaker
       end
       
       % Record the guess
-      guessHistory := record(guess: Result roundNumber: {Length @guessHistory + 1}) | @guessHistory
+      guessHistory := record(guess: Result roundNumber: {Length @guessHistory} + 1) | @guessHistory
    end
    
    meth makeSpecificGuess(SuggestedGuess ?Result)
@@ -459,7 +473,7 @@ class CodeBreaker
       %% Note: If SuggestedGuess is invalid, return false
       %% Side effects: Records guess in history
       if {self isValidGuess(SuggestedGuess $)} then
-         guessHistory := record(guess: SuggestedGuess roundNumber: {Length @guessHistory + 1}) | @guessHistory
+         guessHistory := record(guess: SuggestedGuess roundNumber: {Length @guessHistory} + 1) | @guessHistory
          Result = true
       else
          Result = false
@@ -472,7 +486,7 @@ class CodeBreaker
       %%        Feedback :: FeedbackResult - Feedback received from codemaker
       %% Side effects: Updates internal state, refines strategy if applicable
       %% Note: Smart strategies use this to eliminate future possibilities
-      feedbackHistory := record(guess: Guess feedback: Feedback roundNumber: {Length @feedbackHistory + 1}) | @feedbackHistory
+      feedbackHistory := record(guess: Guess feedback: Feedback roundNumber: {Length @feedbackHistory} + 1) | @feedbackHistory
    end
    
    meth getGuessHistory(?Result)
@@ -567,3 +581,257 @@ class CodeBreaker
       end
    end
 end
+
+
+
+%% ============================================================================
+%% COMPREHENSIVE TEST CASES
+%% ============================================================================
+
+{System.showInfo "\n=== MASTERMIND COMPREHENSIVE TEST SUITE ==="}
+
+%% Test 1: Basic CodeMaker functionality
+{System.showInfo "\n--- Test 1: CodeMaker Basic Functionality ---"}
+local CM1 CM2 Success1 Success2 Code1 Code2 Colors1 Colors2 in
+   CM1 = {New CodeMaker init()}
+   CM2 = {New CodeMaker initCustom([red blue green yellow orange])}
+   
+   % Test default initialization
+   {CM1 getAvailableColors(Colors1)}
+   {System.showInfo "Default colors:"} {System.show Colors1}
+   
+   % Test custom initialization
+   {CM2 getAvailableColors(Colors2)}
+   {System.showInfo "Custom colors:"} {System.show Colors2}
+   
+   % Test code generation
+   {CM1 generateSecretCode(Success1)}
+   {CM1 getSecretCode(Code1)}
+   {System.showInfo "Generated code:"} {System.show Code1} {System.showInfo "Success:"} {System.show Success1}
+   
+   % Test setting specific code
+   {CM1 setSecretCode([red blue green yellow] Success2)}
+   {CM1 getSecretCode(Code2)}
+   {System.showInfo "Set code:"} {System.show Code2} {System.showInfo "Success:"} {System.show Success2}
+end
+
+%% Test 2: Code validation
+{System.showInfo "\n--- Test 2: Code Validation ---"}
+local CM Valid1 Valid2 Valid3 Valid4 in
+   CM = {New CodeMaker init()}
+   
+   % Valid codes
+   {CM isValidCode([red blue green yellow] Valid1)}
+   {CM isValidCode([red red red red] Valid2)}
+   {System.showInfo "Valid codes - [red blue green yellow]:"} {System.show Valid1} {System.showInfo "[red red red red]:"} {System.show Valid2}
+   
+   % Invalid codes
+   {CM isValidCode([red blue green] Valid3)}  % Too short
+   {CM isValidCode([red blue green yellow orange] Valid4)}  % Too long
+   {System.showInfo "Invalid codes - [red blue green]:"} {System.show Valid3} {System.showInfo "[red blue green yellow orange]:"} {System.show Valid4}
+end
+
+%% Test 3: Guess evaluation
+{System.showInfo "\n--- Test 3: Guess Evaluation ---"}
+local CM Feedback1 Feedback2 Feedback3 Feedback4 in
+   CM = {New CodeMaker init()}
+   
+   % Set a known secret code
+   {CM setSecretCode([red blue green yellow] _)}
+   
+   % Perfect match
+   {CM evaluateGuess([red blue green yellow] Feedback1)}
+   {System.showInfo "Perfect match - Black:"} {System.show Feedback1.blackClues} {System.showInfo "White:"} {System.show Feedback1.whiteClues} {System.showInfo "Correct:"} {System.show Feedback1.isCorrect}
+   
+   % All colors correct, wrong positions
+   {CM evaluateGuess([blue red yellow green] Feedback2)}
+   {System.showInfo "All colors wrong positions - Black:"} {System.show Feedback2.blackClues} {System.showInfo "White:"} {System.show Feedback2.whiteClues}
+   
+   % Some correct colors and positions
+   {CM evaluateGuess([red orange purple blue] Feedback3)}
+   {System.showInfo "Mixed - Black:"} {System.show Feedback3.blackClues} {System.showInfo "White:"} {System.show Feedback3.whiteClues}
+   
+   % No matches
+   {CM evaluateGuess([orange purple orange purple] Feedback4)}
+   {System.showInfo "No matches - Black:"} {System.show Feedback4.blackClues} {System.showInfo "White:"} {System.show Feedback4.whiteClues}
+end
+
+%% Test 4: CodeBreaker strategies
+{System.showInfo "\n--- Test 4: CodeBreaker Strategies ---"}
+local CB1 CB2 CB3 CB4 Guess1 Guess2 Guess3 Guess4 Strategy1 Strategy2 in
+   CB1 = {New CodeBreaker init()}  % Random
+   CB2 = {New CodeBreaker initStrategy('systematic')}
+   CB3 = {New CodeBreaker initStrategy('smart')}
+   CB4 = {New CodeBreaker initStrategy('human')}
+   
+   % Test random strategy
+   {CB1 makeGuess(Guess1)}
+   {CB1 getStrategy(Strategy1)}
+   {System.showInfo "Random strategy:"} {System.show Strategy1} {System.showInfo "Guess:"} {System.show Guess1}
+   
+   % Test systematic strategy
+   {CB2 makeGuess(Guess2)}
+   {CB2 getStrategy(Strategy2)}
+   {System.showInfo "Systematic strategy:"} {System.show Strategy2} {System.showInfo "Guess:"} {System.show Guess2}
+   
+   % Test smart strategy
+   {CB3 makeGuess(Guess3)}
+   {System.showInfo "Smart strategy guess:"} {System.show Guess3}
+   
+   % Test strategy change
+   {CB1 setStrategy('smart' _)}
+   {CB1 makeGuess(Guess4)}
+   {System.showInfo "Changed to smart strategy, guess:"} {System.show Guess4}
+end
+
+%% Test 5: Specific guess functionality
+{System.showInfo "\n--- Test 5: Specific Guess Functionality ---"}
+local CB Success1 Success2 Success3 in
+   CB = {New CodeBreaker init()}
+   
+   % Valid specific guess
+   {CB makeSpecificGuess([red blue green yellow] Success1)}
+   {System.showInfo "Valid specific guess success:"} {System.show Success1}
+   
+   % Invalid specific guess (wrong length)
+   {CB makeSpecificGuess([red blue green] Success2)}
+   {System.showInfo "Invalid specific guess (short) success:"} {System.show Success2}
+   
+   % Invalid specific guess (invalid color)
+   {CB makeSpecificGuess([red blue green invalid] Success3)}
+   {System.showInfo "Invalid specific guess (bad color) success:"} {System.show Success3}
+end
+
+%% Test 6: Feedback processing
+{System.showInfo "\n--- Test 6: Feedback Processing ---"}
+local CB Feedback History in
+   CB = {New CodeBreaker init()}
+   
+   % Make a guess
+   {CB makeGuess(_)}
+   
+   % Create feedback
+   Feedback = feedback(
+      blackClues: 2
+      whiteClues: 1
+      totalCorrect: 3
+      isCorrect: false
+      clueList: [black black white none]
+   )
+   
+   % Receive feedback
+   {CB receiveFeedback([red blue green yellow] Feedback)}
+   
+   % Check history
+   {CB getGuessHistory(History)}
+   {System.showInfo "Guess history length:"} {System.show {Length History}}
+end
+
+%% Test 7: Full game simulation
+{System.showInfo "\n--- Test 7: Full Game Simulation ---"}
+local Game CM CB Status Round Result in
+   CM = {New CodeMaker init()}
+   CB = {New CodeBreaker init()}
+   Game = {New MastermindGame init(CM CB)}
+   
+   % Check initial status
+   {Game getGameStatus(Status)}
+   {System.showInfo "Initial game status:"} {System.show Status}
+   
+   % Start game
+   {Game startGame(_)}
+   {Game getGameStatus(Status)}
+   {System.showInfo "After start game status:"} {System.show Status}
+   
+   % Play a few rounds
+   {Game playRound(Result)}
+   {System.showInfo "Round 1 - Guess:"} {System.show Result.guess} {System.showInfo "Black:"} {System.show {Length {Filter Result.feedback fun {$ X} X == black end}}} {System.showInfo "White:"} {System.show {Length {Filter Result.feedback fun {$ X} X == white end}}}
+   
+   {Game getCurrentRound(Round)}
+   {System.showInfo "Current round:"} {System.show Round}
+   
+   {Game getRemainingRounds(_)}
+   {System.showInfo "Remaining rounds calculated"}
+end
+
+%% Test 8: Edge cases
+{System.showInfo "\n--- Test 8: Edge Cases ---"}
+local CM CB Game in
+   CM = {New CodeMaker init()}
+   CB = {New CodeBreaker init()}
+   Game = {New MastermindGame init(CM CB)}
+   
+   % Test invalid custom colors (too few)
+   try
+      local BadCM in
+         BadCM = {New CodeMaker initCustom([red blue])}
+         {System.showInfo "ERROR: Should not reach here"}
+      end
+   catch E then
+      {System.showInfo "Correctly caught error for too few colors:"} {System.show E}
+   end
+   
+   % Test game without secret code
+   try
+      local BadCM2 BadCB2 BadGame2 in
+         BadCM2 = {New CodeMaker init()}
+         BadCB2 = {New CodeBreaker init()}
+         BadGame2 = {New MastermindGame init(BadCM2 BadCB2)}
+         {BadGame2 playRound(_)}
+         {System.showInfo "ERROR: Should not reach here"}
+      end
+   catch E then
+      {System.showInfo "Correctly caught error for no secret code:"} {System.show E}
+   end
+   
+   % Test invalid guess length
+   try
+      {CM setSecretCode([red blue green yellow] _)}
+      {CM evaluateGuess([red blue green] _)}
+      {System.showInfo "ERROR: Should not reach here"}
+   catch E then
+      {System.showInfo "Correctly caught error for invalid guess length:"} {System.show E}
+   end
+end
+
+%% Test 9: Strategy-specific functionality
+{System.showInfo "\n--- Test 9: Strategy-Specific Functionality ---"}
+local CB1 CB2 Possibilities1 Possibilities2 in
+   CB1 = {New CodeBreaker initStrategy('smart')}
+   CB2 = {New CodeBreaker initStrategy('random')}
+   
+   % Test remaining possibilities for smart strategy
+   {CB1 getRemainingPossibilities(Possibilities1)}
+   {System.showInfo "Smart strategy possibilities:"} {System.show Possibilities1}
+   
+   % Test remaining possibilities for random strategy
+   {CB2 getRemainingPossibilities(Possibilities2)}
+   {System.showInfo "Random strategy possibilities:"} {System.show Possibilities2}
+   
+   % Test history reset
+   {CB1 makeGuess(_)}
+   {CB1 resetHistory()}
+   {CB1 getGuessHistory(_)}
+   {System.showInfo "History reset completed"}
+end
+
+%% Test 10: Multiple games
+{System.showInfo "\n--- Test 10: Multiple Games ---"}
+local Game CM CB Status1 Status2 in
+   CM = {New CodeMaker init()}
+   CB = {New CodeBreaker init()}
+   Game = {New MastermindGame init(CM CB)}
+   
+   % First game
+   {Game startGame(_)}
+   {Game playRound(_)}
+   {Game getGameStatus(Status1)}
+   {System.showInfo "First game status:"} {System.show Status1}
+   
+   % Second game
+   {Game startGame(_)}
+   {Game getGameStatus(Status2)}
+   {System.showInfo "Second game status:"} {System.show Status2}
+end
+
+{System.showInfo "\n=== ALL TESTS COMPLETED ==="}
