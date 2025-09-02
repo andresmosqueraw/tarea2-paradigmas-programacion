@@ -1,21 +1,5 @@
 declare
 
-% Helper function to convert numbers to words
-fun {NumberToWord N}
-   case N of 0 then "zero"
-   [] 1 then "one"
-   [] 2 then "two"
-   [] 3 then "three"
-   [] 4 then "four"
-   [] 5 then "five"
-   [] 6 then "six"
-   [] 7 then "seven"
-   [] 8 then "eight"
-   [] 9 then "nine"
-   else {IntToString N}
-   end
-end
-
 class Expression
    meth print
       {System.showInfo "Base method does nothing"}
@@ -40,7 +24,24 @@ class Num from Expression
       R = @n
    end
    meth toString(R)
-      R = {NumberToWord @n}
+      local Word in
+         {self numberToWord(@n Word)}
+         R = Word
+      end
+   end
+   meth numberToWord(N R)
+      case N of 0 then R = "zero"
+      [] 1 then R = "one"
+      [] 2 then R = "two"
+      [] 3 then R = "three"
+      [] 4 then R = "four"
+      [] 5 then R = "five"
+      [] 6 then R = "six"
+      [] 7 then R = "seven"
+      [] 8 then R = "eight"
+      [] 9 then R = "nine"
+      else R = {IntToString N}
+      end
    end
 end
 
