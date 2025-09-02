@@ -16,7 +16,7 @@ class Matrix
       size := {Length Data}
    end
    
-   meth init(Size Value) 
+   meth initSizeValue(Size Value) 
       %% Initialize N×N matrix with same value in all positions
       %% Input: Size :: Int - Integer N for creating an N×N matrix (must be > 0)
       %%        Value :: Int - Value to fill all matrix positions
@@ -54,7 +54,7 @@ class Matrix
       if Row >= 1 andthen Row =< @size andthen Col >= 1 andthen Col =< @size then
          local
             fun {GetNth List N}
-               if N == 1 then {List.1}
+               if N == 1 then List.1
                else {GetNth List.2 N-1}
                end
             end
@@ -278,4 +278,42 @@ class Matrix
          {PrintMatrix @data}
       end
    end
+end
+
+%% -------- Tests --------
+local M1 M2 Sz E R Row Col SR PR SC PC SA PA in
+   %% Instantiate from data
+   M1 = {New Matrix init([[1 2 3] [4 5 6] [7 8 9]])}
+   %% Instantiate NxN filled value
+   M2 = {New Matrix initSizeValue(3 5)}
+
+   {System.show '--- M1 ---'}
+   {M1 display()}
+   {M1 getSize(Sz)}
+   {System.showInfo "size_M1:"} {System.show Sz}
+   {M1 getElement(2 2 E)}
+   {System.showInfo "elem_2_2:"} {System.show E}
+   {M1 getRow(1 Row)}
+   {System.showInfo "row1:"} {System.show Row}
+   {M1 getColumn(3 Col)}
+   {System.showInfo "col3:"} {System.show Col}
+   {M1 sumRow(1 SR)}
+   {System.showInfo "sumRow1:"} {System.show SR}
+   {M1 productRow(2 PR)}
+   {System.showInfo "prodRow2:"} {System.show PR}
+   {M1 sumColumn(3 SC)}
+   {System.showInfo "sumCol3:"} {System.show SC}
+   {M1 productColumn(1 PC)}
+   {System.showInfo "prodCol1:"} {System.show PC}
+   {M1 sumAll(SA)}
+   {System.showInfo "sumAll:"} {System.show SA}
+   {M1 productAll(PA)}
+   {System.showInfo "prodAll:"} {System.show PA}
+
+   {System.show '--- M2 ---'}
+   {M2 display()}
+   {M2 getSize(Sz)}
+   {System.showInfo "size_M2:"} {System.show Sz}
+   {M2 getElement(3 2 E)}
+   {System.showInfo "elem_3_2:"} {System.show E}
 end
