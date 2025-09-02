@@ -177,3 +177,12 @@ local Str in {M toString(Str)} {System.showInfo "ToString: " # Str} end
 {Mod print}
 local Result in {Mod eval(Result)} {System.showInfo "Result: " # Result} end
 local Str in {Mod toString(Str)} {System.showInfo "ToString: " # Str} end
+
+% Test with greater numbers
+N5 = {New Num init(15)}
+N6 = {New Num init(4)}
+S2 = {New Sum init(N5 N6)}
+{System.showInfo "\nSum: 15 + 4"}
+{S2 print}
+local Result2 in {S2 eval(Result2)} {System.showInfo "Result: " # Result2} end
+local Str2 in {S2 toString(Str2)} {System.showInfo "ToString: " # Str2} end
