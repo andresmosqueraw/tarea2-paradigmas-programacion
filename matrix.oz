@@ -8,8 +8,8 @@ class Matrix
    meth init(Data)
       %% Initialize matrix from list of lists
       %% Input: Data :: [[Int]] - List of lists representing matrix rows
-      %%                            Each inner list represents a row of the matrix
-      %%                            All rows must have equal length to form a square matrix
+      %% Each inner list represents a row of the matrix
+      %% All rows must have equal length to form a square matrix
       %% Precondition: Data must represent a valid square matrix (N×N where N > 0)
       %% Side effects: Initializes @data and @size attributes
       data := Data
@@ -281,7 +281,7 @@ class Matrix
 end
 
 %% -------- Tests --------
-local M1 M2 Sz E R Row Col SR PR SC PC SA PA in
+local M1 M2 Sz E Row Col SR PR SC PC SA PA in
    %% Instantiate from data
    M1 = {New Matrix init([[1 2 3] [4 5 6] [7 8 9]])}
    %% Instantiate NxN filled value
