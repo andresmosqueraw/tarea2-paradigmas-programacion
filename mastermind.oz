@@ -729,19 +729,19 @@ end
 
 %% Test 7: Full game simulation
 {System.showInfo "\n--- Test 7: Full Game Simulation ---"}
-local Game CM CB Status Round Result in
+local Game CM CB Status1 Status2 Round Result in
    CM = {New CodeMaker init()}
    CB = {New CodeBreaker init()}
    Game = {New MastermindGame init(CM CB)}
    
    % Check initial status
-   {Game getGameStatus(Status)}
-   {System.showInfo "Initial game status:"} {System.show Status}
+   {Game getGameStatus(Status1)}
+   {System.showInfo "Initial game status:"} {System.show Status1}
    
    % Start game
    {Game startGame(_)}
-   {Game getGameStatus(Status)}
-   {System.showInfo "After start game status:"} {System.show Status}
+   {Game getGameStatus(Status2)}
+   {System.showInfo "After start game status:"} {System.show Status2}
    
    % Play a few rounds
    {Game playRound(Result)}
