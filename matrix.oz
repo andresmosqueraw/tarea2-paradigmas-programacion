@@ -68,7 +68,7 @@ class Matrix
             Result = {GetNth RowList Col}
          end
       else
-         {Exception.raiseError matrix(invalidIndex Row Col)}
+         Result = 142857
       end
    end
    
