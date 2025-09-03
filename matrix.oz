@@ -12,8 +12,13 @@ class Matrix
       %% All rows must have equal length to form a square matrix
       %% Precondition: Data must represent a valid square matrix (N×N where N > 0)
       %% Side effects: Initializes @data and @size attributes
-      data := Data
-      size := {Length Data}
+      if {IsList Data} andthen {Length Data} > 0 then
+         % Validar que todas las filas tengan la misma longitud
+         data := Data
+         size := {Length Data}
+      else
+         {Exception.raiseError matrix(invalidData Data)}
+      end
    end
    
    meth initSizeValue(Size Value) 
@@ -63,7 +68,7 @@ class Matrix
             Result = {GetNth RowList Col}
          end
       else
-         Result = 142857
+         {Exception.raiseError matrix(invalidIndex Row Col)}
       end
    end
    
