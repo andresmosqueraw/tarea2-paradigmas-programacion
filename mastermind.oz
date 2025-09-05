@@ -1,5 +1,3 @@
-declare MastermindGame CodeBreaker CodeMaker
-
 %% ============================================================================
 %% MastermindGame Class
 %% Main game controller that manages the overall game flow
@@ -7,6 +5,8 @@ declare MastermindGame CodeBreaker CodeMaker
 %% Color enumeration - valid colors in the game
 %% Type: Color :: red | blue | green | yellow | orange | purple
 %% ============================================================================
+declare MastermindGame CodeBreaker CodeMaker
+
 class MastermindGame
    attr codemaker codebreaker currentRound maxRounds gameStatus
    
@@ -190,7 +190,7 @@ class CodeMaker
       %%            whiteClues: Int            % Number of correct color, wrong position  
       %%            totalCorrect: Int          % blackClues + whiteClues
       %%            isCorrect: Bool            % true if guess matches secret code exactly
-      %%            clueList: [FeedbackClue]   % List of individual Clue results
+      %%            ClueList: [FeedbackClue]   % List of individual Clue results
       %%         )
       %%         FeedbackClue :: black | white | none
       if @secretCode == nil then
@@ -352,7 +352,7 @@ end
 %% CodeBreaker Class
 %% Handles guess generation and strategy for breaking codes
 %% ============================================================================  
-class CodeBreaker
+declare class CodeBreaker
    attr guessHistory feedbackHistory strategy availableColors
    
    meth init(Strategy)
