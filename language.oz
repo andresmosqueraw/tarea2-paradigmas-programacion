@@ -30,6 +30,40 @@ class Num from Expression
       end
    end
    meth numberToWord(N R) %% hasta 999
+      if N < 0 then
+         R = "negative " # {self numberToWord(~N $)}
+      elseif N == 0 then
+         R = "zero"
+      elseif N < 10 then
+         R = {self getDigitWord(N $)}
+      elseif N < 20 then
+         R = {self getTeenWord(N $)}
+      elseif N < 100 then
+         local Tens Ones in
+            Tens = N div 10
+            Ones = N mod 10
+            if Ones == 0 then
+               R = {self getTensWord(Tens $)}
+            else
+               R = {self getTensWord(Tens $)} # "-" # {self getDigitWord(Ones $)}
+            end
+         end
+      elseif N < 1000 then
+         local Hundreds Rest in
+            Hundreds = N div 100
+            Rest = N mod 100
+            if Rest == 0 then
+               R = {self getDigitWord(Hundreds $)} # " hundred"
+            else
+               R = {self getDigitWord(Hundreds $)} # " hundred " # {self numberToWord(Rest $)}
+            end
+         end
+      else
+         R = {IntToString N}
+      end
+   end
+   
+   meth getDigitWord(N R)
       case N of 0 then R = "zero"
       [] 1 then R = "one"
       [] 2 then R = "two"
@@ -40,6 +74,34 @@ class Num from Expression
       [] 7 then R = "seven"
       [] 8 then R = "eight"
       [] 9 then R = "nine"
+      else R = {IntToString N}
+      end
+   end
+   
+   meth getTeenWord(N R)
+      case N of 10 then R = "ten"
+      [] 11 then R = "eleven"
+      [] 12 then R = "twelve"
+      [] 13 then R = "thirteen"
+      [] 14 then R = "fourteen"
+      [] 15 then R = "fifteen"
+      [] 16 then R = "sixteen"
+      [] 17 then R = "seventeen"
+      [] 18 then R = "eighteen"
+      [] 19 then R = "nineteen"
+      else R = {IntToString N}
+      end
+   end
+   
+   meth getTensWord(N R)
+      case N of 2 then R = "twenty"
+      [] 3 then R = "thirty"
+      [] 4 then R = "forty"
+      [] 5 then R = "fifty"
+      [] 6 then R = "sixty"
+      [] 7 then R = "seventy"
+      [] 8 then R = "eighty"
+      [] 9 then R = "ninety"
       else R = {IntToString N}
       end
    end
