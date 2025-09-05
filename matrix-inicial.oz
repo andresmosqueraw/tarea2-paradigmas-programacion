@@ -1,9 +1,11 @@
 %% Matrix Class Definition
 %% Represents a square matrix with operations for rows, columns, and entire matrix
+declare Matrix
+
 class Matrix
    attr data size
    
-   meth init(Data)
+   meth init(Data) 
       %% Initialize matrix from list of lists
       %% Input: Data :: [[Int]] - List of lists representing matrix rows
       %%                            Each inner list represents a row of the matrix
@@ -11,21 +13,15 @@ class Matrix
       %% Precondition: Data must represent a valid square matrix (N×N where N > 0)
       %% Side effects: Initializes @data and @size attributes
       %% Your code here
-   end
-   
-   meth init(Size Value) 
-      %% Initialize N×N matrix with same value in all positions
-      %% Input: Size :: Int - Integer N for creating an N×N matrix (must be > 0)
-      %%        Value :: Int - Value to fill all matrix positions
-      %% Side effects: Initializes @data and @size attributes
-      %% Your code here  
-   end
+      skip
+   end 
    
    meth getSize(?Result)
       %% Returns the size N of the N×N matrix
       %% Input: None
       %% Output: Result :: Int - The dimension N of the N×N matrix
       %% Your code here
+      skip
    end
    
    meth getElement(Row Col ?Result)
@@ -35,6 +31,7 @@ class Matrix
       %% Output: Result :: Int - Element at position (Row, Col)
       %% Note: If Row and Col are not valide within the matrix size return 142857
       %% Your code here
+      skip
    end
    
    meth getRow(RowIndex ?Result)
@@ -43,6 +40,7 @@ class Matrix
       %% Output: Result :: [Int] - List containing all elements of the specified row
       %% Note: If RowIndex is not valide within the matrix size return 142857
       %% Your code here
+      skip
    end
    
    meth getColumn(ColIndex ?Result)
@@ -51,6 +49,7 @@ class Matrix
       %% Output: Result :: [Int] - List containing all elements of the specified column
       %% Note: If ColIndex is not valide within the matrix size return 142857
       %% Your code here
+      skip
    end
    
    meth sumRow(RowIndex ?Result)
@@ -60,6 +59,7 @@ class Matrix
       %% Precondition: RowIndex is valid within the Matrix size
       %% Note: If RowIndex is not valide within the matrix size return 142857
       %% Your code here
+      skip
    end
    
    meth productRow(RowIndex ?Result)
@@ -68,6 +68,7 @@ class Matrix
       %% Output: Result :: Int - Arithmetic product of all elements in the row
       %% Note: If RowIndex is not valide within the matrix size return 142857
       %% Your code here
+      skip
    end
    
    meth sumColumn(ColIndex ?Result)
@@ -76,6 +77,7 @@ class Matrix
       %% Output: Result :: Int - Arithmetic sum of all elements in the column
       %% Note: If ColIndex is not valide within the matrix size return 142857
       %% Your code here
+      skip
    end
    
    meth productColumn(ColIndex ?Result)
@@ -84,6 +86,7 @@ class Matrix
       %% Output: Result :: Int - Arithmetic product of all elements in the column
       %% Note: If ColIndex is not valide within the matrix size return 142857
       %% Your code here
+      skip
    end
    
    meth sumAll(?Result)
@@ -92,6 +95,7 @@ class Matrix
       %% Output: Result :: Int - Arithmetic sum of all matrix elements
       %% Note: Returns 0 for empty matrix
       %% Your code here
+      skip
    end
    
    meth productAll(?Result) 
@@ -100,6 +104,7 @@ class Matrix
       %% Output: Result :: Int - Arithmetic product of all matrix elements
       %% Note: Returns 1 for empty matrix, returns 0 if any element is 0
       %% Your code here
+      skip
    end
    
    %% Utility methods
@@ -109,5 +114,6 @@ class Matrix
       %% Input: None
       %% Output: None (void)
       %% Your code here
+      skip
    end
 end

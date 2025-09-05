@@ -5,6 +5,8 @@
 %% Color enumeration - valid colors in the game
 %% Type: Color :: red | blue | green | yellow | orange | purple
 %% ============================================================================
+declare MastermindGame CodeBreaker CodeMaker
+
 class MastermindGame
    attr codemaker codebreaker currentRound maxRounds gameStatus
    
@@ -15,6 +17,7 @@ class MastermindGame
       %% Side effects: Initializes game state, sets maxRounds to 12
       %% Postcondition: Game ready to start, gameStatus = 'ready'
       %% Your code here
+      skip 
    end
    
    meth startGame(?Result)
@@ -25,6 +28,7 @@ class MastermindGame
       %% Precondition: Game must be in 'ready' or 'finished' state
       %% Postcondition: Game in 'playing' state, currentRound = 1
       %% Your code here
+      skip 
    end
    
    meth playRound(?Result)
@@ -41,6 +45,7 @@ class MastermindGame
       %% Precondition: Game must be in 'playing' state
       %% Side effects: Increments currentRound, may change gameStatus
       %% Your code here
+      skip 
    end
    
    meth getGameStatus(?Result)
@@ -49,6 +54,7 @@ class MastermindGame
       %% Output: Result :: GameStatus - Current status of the game
       %%         GameStatus :: 'ready' | 'playing' | 'won' | 'lost' | 'finished'
       %% Your code here
+      skip 
    end
    
    meth getCurrentRound(?Result)
@@ -56,6 +62,7 @@ class MastermindGame
       %% Input: None
       %% Output: Result :: Int - Current round number (1-12)
       %% Your code here
+      skip 
    end
    
    meth getRemainingRounds(?Result)
@@ -63,6 +70,7 @@ class MastermindGame
       %% Input: None
       %% Output: Result :: Int - Number of rounds remaining (0-11)
       %% Your code here
+      skip 
    end
    
 end
@@ -74,19 +82,13 @@ end
 class CodeMaker
    attr secretCode availableColors
    
-   meth init()
+   meth init() 
       %% Initialize codemaker with available colors
       %% Input: None
       %% Side effects: Sets availableColors to [red blue green yellow orange purple]
       %% Postcondition: Ready to generate secret codes
       %% Your code here
-   end
-   
-   meth init(CustomColors)
-      %% Initialize codemaker with custom color set
-      %% Input: CustomColors :: [Color] - List of available colors (must have > 3 colors)
-      %% Side effects: Sets availableColors to CustomColors
-      %% Your code here
+      skip 
    end
    
    meth generateSecretCode(?Result)
@@ -97,6 +99,7 @@ class CodeMaker
       %% Postcondition: secretCode contains exactly 4 valid colors
       %% Note: Uses random selection, colors may repeat
       %% Your code here
+      skip 
    end
    
    meth setSecretCode(Code ?Result)
@@ -105,6 +108,7 @@ class CodeMaker
       %% Output: Result :: Bool - true if code was set successfully
       %% Validation: Code must have exactly 4 elements, all valid colors
       %% Your code here
+      skip 
    end
    
    meth evaluateGuess(Guess ?Result)
@@ -120,6 +124,7 @@ class CodeMaker
       %%         )
       %%         FeedbackClue :: black | white | none
       %% Your code here
+      skip 
    end
    
    meth getSecretCode(?Result)
@@ -128,6 +133,7 @@ class CodeMaker
       %% Output: Result :: [Color] | nil - Secret code or nil if not set
       %% Note: Should only be used for testing, breaks game in normal play
       %% Your code here
+      skip 
    end
    
    meth getAvailableColors(?Result)
@@ -135,6 +141,7 @@ class CodeMaker
       %% Input: None
       %% Output: Result :: [Color] - List of available colors for the game
       %% Your code here
+      skip 
    end
    
    meth isValidCode(Code ?Result)
@@ -143,6 +150,7 @@ class CodeMaker
       %% Output: Result :: Bool - true if code is valid for this game
       %% Validation: Exactly 4 colors, all from available color set
       %% Your code here
+      skip 
    end
 end
 
@@ -150,7 +158,7 @@ end
 %% CodeBreaker Class
 %% Handles guess generation and strategy for breaking codes
 %% ============================================================================  
-class CodeBreaker
+declare class CodeBreaker
    attr guessHistory feedbackHistory strategy availableColors
    
    meth init(Strategy)
@@ -160,35 +168,17 @@ class CodeBreaker
       %% Side effects: Initializes strategy and available colors
       %% Postcondition: Ready to make guesses
       %% Your code here
+      skip 
    end
-   
-   meth init()
-      %% Initialize codebreaker with default random strategy
-      %% Input: None
-      %% Side effects: Sets strategy to 'random', loads default colors
-      %% Your code here
-   end
-   
-   meth makeGuess(?Result)
-      %% Generates next guess based on current strategy and history
-      %% Input: None
-      %% Output: Result :: [Color] - List of 4 colors representing the guess
-      %% Side effects: Updates internal guess tracking
-      %% Strategy behavior:
-      %%   - 'random': Random valid combination
-      %%   - 'systematic': Tries all combinations systematically  
-      %%   - 'smart': Uses feedback to eliminate possibilities
-      %%   - 'human': Prompts user for input
-      %% Your code here
-   end
-   
-   meth makeGuess(SuggestedGuess ?Result)
+      
+   meth makeGuess(SuggestedGuess ?Result)  
       %% Makes a specific guess (overrides strategy)
       %% Input: SuggestedGuess :: [Color] - Specific guess to make
       %% Output: Result :: Bool - true if guess was accepted and recorded
       %% Note: If SuggestedGuess is invalid, return false
       %% Side effects: Records guess in history
       %% Your code here
+      skip 
    end
    
    meth receiveFeedback(Guess Feedback)
@@ -198,6 +188,7 @@ class CodeBreaker
       %% Side effects: Updates internal state, refines strategy if applicable
       %% Note: Smart strategies use this to eliminate future possibilities
       %% Your code here
+      skip 
    end
    
    meth getGuessHistory(?Result)
@@ -210,6 +201,7 @@ class CodeBreaker
       %%            roundNumber: Int
       %%         )
       %% Your code here
+      skip 
    end
    
    meth setStrategy(NewStrategy ?Result)
@@ -218,6 +210,7 @@ class CodeBreaker
       %% Output: Result :: Bool - true if strategy was changed successfully
       %% Side effects: Updates strategy, may reset internal state
       %% Your code here
+      skip 
    end
    
    meth getStrategy(?Result)
@@ -225,6 +218,7 @@ class CodeBreaker
       %% Input: None
       %% Output: Result :: GuessingStrategy - Current strategy being used
       %% Your code here
+      skip 
    end
    
    meth resetHistory()
@@ -233,6 +227,7 @@ class CodeBreaker
       %% Output: None (void)
       %% Side effects: Clears guessHistory and feedbackHistory
       %% Your code here
+      skip 
    end
    
    meth getRemainingPossibilities(?Result)
@@ -241,7 +236,7 @@ class CodeBreaker
       %% Output: Result :: Int | nil - Number of possibilities or nil if not applicable
       %% Note: Only meaningful for 'smart' strategy, returns nil for others
       %% Your code here
+      skip 
    end
 end
 
-end

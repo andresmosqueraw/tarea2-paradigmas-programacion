@@ -5,7 +5,7 @@ declare
 class Matrix
    attr data size
    
-   meth init(Data)
+   meth init(Data) %% dejar data
       %% Initialize matrix from list of lists
       %% Input: Data :: [[Int]] - List of lists representing matrix rows
       %% Each inner list represents a row of the matrix

@@ -29,7 +29,7 @@ class Num from Expression
          R = Word
       end
    end
-   meth numberToWord(N R)
+   meth numberToWord(N R) %% hasta 999
       case N of 0 then R = "zero"
       [] 1 then R = "one"
       [] 2 then R = "two"
@@ -127,7 +127,7 @@ class Modulo from Expression
       right := R
    end
    meth print
-      {@left print} {System.showInfo "%"} {@right print}
+      {@left print} {System.showInfo "mod"} {@right print}
    end
    meth eval(R)
       local LR RR in

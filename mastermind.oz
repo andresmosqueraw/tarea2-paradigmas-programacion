@@ -133,7 +133,7 @@ end
 class CodeMaker
    attr secretCode availableColors
    
-   meth init()
+   meth init() %%% quitar
       %% Initialize codemaker with available colors
       %% Input: None
       %% Side effects: Sets availableColors to [red blue green yellow orange purple]
@@ -367,7 +367,7 @@ end
 class CodeBreaker
    attr guessHistory feedbackHistory strategy availableColors
    
-   meth initStrategy(Strategy)
+   meth initStrategy(Strategy) %%% esteeeeeeeeee dejar
       %% Initialize codebreaker with a specific strategy
       %% Input: Strategy :: GuessingStrategy - Strategy for making guesses
       %%        GuessingStrategy :: 'random' | 'systematic' | 'smart' | 'human'
