@@ -1,4 +1,4 @@
-declare
+declare Expression Num Sum Difference Multiplication Modulo
 
 class Expression
    meth print
