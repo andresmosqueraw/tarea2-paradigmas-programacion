@@ -30,7 +30,7 @@ class MastermindGame
       %% Side effects: Resets game state, generates new secret code
       %% Precondition: Game must be in 'ready' or 'finished' state
       %% Postcondition: Game in 'playing' state, currentRound = 1
-      if @gameStatus == 'ready' orelse @gameStatus == 'finished' then
+      if (@gameStatus == 'ready' orelse @gameStatus == 'finished') then
          local Success in
             {@codemaker generateSecretCode(Success)}
             if Success then
@@ -61,28 +61,26 @@ class MastermindGame
       %% Precondition: Game must be in 'playing' state
       %% Side effects: Increments currentRound, may change gameStatus
       if @gameStatus == 'playing' then
-         local Guess Feedback FeedbackResult GameWon GameOver ClueList in
+         local Guess Feedback FeedbackResult GameWon GameOver ClueList RoundNo in
+            RoundNo = @currentRound
             {@codebreaker nextGuess(Guess)}
             {@codemaker evaluateGuess(Guess FeedbackResult)}
             ClueList = FeedbackResult.clueList
             Feedback = ClueList
             GameWon = FeedbackResult.isCorrect
-            GameOver = GameWon orelse @currentRound >= @maxRounds
-            
+            GameOver = GameWon orelse RoundNo >= @maxRounds
             {@codebreaker receiveFeedback(Guess FeedbackResult)}
-            
-            if GameWon then
-               gameStatus := 'won'
-            elseif GameOver then
-               gameStatus := 'lost'
+
+            if (GameWon orelse GameOver) then
+               gameStatus := 'finished'
             else
-               currentRound := @currentRound + 1
+               currentRound := RoundNo + 1
             end
-            
+
             Result = result(
                guess: Guess
                feedback: Feedback
-               roundNumber: @currentRound
+               roundNumber: RoundNo   % <-- ahora coincide con el comentario
                gameWon: GameWon
                gameOver: GameOver
             )
@@ -173,7 +171,7 @@ class CodeMaker
       %% Input: Code :: [Color] - List of exactly 4 valid colors
       %% Output: Result :: Bool - true if code was set successfully
       %% Validation: Code must have exactly 4 elements, all valid colors
-      if {Length Code} == 4 andthen {self isValidCode(Code $)} then
+      if {self isValidCode(Code $)} then
          secretCode := Code
          Result = true
       else
@@ -190,7 +188,7 @@ class CodeMaker
       %%            whiteClues: Int            % Number of correct color, wrong position  
       %%            totalCorrect: Int          % blackClues + whiteClues
       %%            isCorrect: Bool            % true if guess matches secret code exactly
-      %%            ClueList: [FeedbackClue]   % List of individual Clue results
+      %%            clueList: [FeedbackClue]   % List of individual clue results
       %%         )
       %%         FeedbackClue :: black | white | none
       if @secretCode == nil then
@@ -242,7 +240,7 @@ class CodeMaker
             
             fun {CountWhite Secret Guess}
                local
-                  SecretCounts = {CountColors @secretCode}
+                  SecretCounts = {CountColors Secret}
                   GuessCounts = {CountColors Guess}
                   
                   fun {CountCommon Counts1 Counts2}
@@ -264,7 +262,7 @@ class CodeMaker
                      end
                   end
                in
-                  {CountCommon SecretCounts GuessCounts} - {CountBlack @secretCode Guess}
+                  {CountCommon SecretCounts GuessCounts} - {CountBlack Secret Guess}
                end
             end
             
@@ -435,7 +433,49 @@ declare class CodeBreaker
       %%            feedback: FeedbackResult  
       %%            roundNumber: Int
       %%         )
-      Result = {Reverse @guessHistory}
+      local
+         %% Construye un FeedbackResult vacío válido
+         fun {EmptyFeedback}
+            feedback(
+               blackClues: 0
+               whiteClues: 0
+               totalCorrect: 0
+               isCorrect: false
+               clueList: [none none none none]
+            )
+         end
+
+         %% Busca el FeedbackResult para un round dado en feedbackHistory
+         fun {FindFeedback FH R}
+            case FH of nil then {EmptyFeedback}
+            [] H|T then
+               if H.roundNumber == R then H.feedback
+               else {FindFeedback T R}
+               end
+            end
+         end
+
+         %% Fusiona guessHistory y feedbackHistory por roundNumber
+         fun {MergeHist GH FH}
+            case GH of nil then nil
+            [] G|Gr then
+               local
+                  R = G.roundNumber
+                  F = {FindFeedback FH R}
+                  Rec = record(
+                     guess: G.guess
+                     feedback: F
+                     roundNumber: R
+                  )
+               in
+                  Rec | {MergeHist Gr FH}
+               end
+            end
+         end
+      in
+         %% Devolvemos en orden cronológico (no invertido) como dice el comentario “history of all guesses”
+         Result = {MergeHist {Reverse @guessHistory} {Reverse @feedbackHistory}}
+      end
    end
    
    meth setStrategy(NewStrategy ?Result)
