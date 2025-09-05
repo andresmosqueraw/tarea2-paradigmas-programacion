@@ -265,246 +265,211 @@ class Matrix
 end
 
 
-{System.showInfo "\n=== MATRIX CLASS TEST SUITE ==="}
+% {System.showInfo "\n=== MATRIX CLASS TEST SUITE ==="}
 
-%% Test 1: Basic Matrix Creation and Initialization
-{System.showInfo "\n=== TEST 1: Matrix Creation and Initialization ==="}
+% {System.showInfo "\n=== TEST 1: Matrix Creation and Initialization ==="}
 
-% Create test matrices
-M1 = {New Matrix init([[1 2] [3 4]])}  % 2x2 matrix
-M2 = {New Matrix init([[1 2 3] [4 5 6] [7 8 9]])}  % 3x3 matrix
-M3 = {New Matrix init([[5]])}  % 1x1 matrix
+% M1 = {New Matrix init([[1 2] [3 4]])}  % 2x2 matrix
+% M2 = {New Matrix init([[1 2 3] [4 5 6] [7 8 9]])}  % 3x3 matrix
+% M3 = {New Matrix init([[5]])}  % 1x1 matrix
 
-% Test getSize
-local Size1 Size2 Size3 in
-   {M1 getSize(Size1)}
-   {M2 getSize(Size2)}
-   {M3 getSize(Size3)}
-   {System.showInfo "M1 size: " # Size1 # " (expected: 2)"}
-   {System.showInfo "M2 size: " # Size2 # " (expected: 3)"}
-   {System.showInfo "M3 size: " # Size3 # " (expected: 1)"}
-end
+% local Size1 Size2 Size3 in
+%    {M1 getSize(Size1)}
+%    {M2 getSize(Size2)}
+%    {M3 getSize(Size3)}
+%    {System.showInfo "M1 size: " # Size1 # " (expected: 2)"}
+%    {System.showInfo "M2 size: " # Size2 # " (expected: 3)"}
+%    {System.showInfo "M3 size: " # Size3 # " (expected: 1)"}
+% end
 
-%% Test 2: getElement method
-{System.showInfo "\n=== TEST 2: getElement method ==="}
+% {System.showInfo "\n=== TEST 2: getElement method ==="}
 
-% Test valid elements
-local Elem1 Elem2 Elem3 Elem4 in
-   {M1 getElement(1 1 Elem1)}  % Should return 1
-   {M1 getElement(1 2 Elem2)}  % Should return 2
-   {M1 getElement(2 1 Elem3)}  % Should return 3
-   {M1 getElement(2 2 Elem4)}  % Should return 4
-   {System.showInfo "M1[1,1] = " # Elem1 # " (expected: 1)"}
-   {System.showInfo "M1[1,2] = " # Elem2 # " (expected: 2)"}
-   {System.showInfo "M1[2,1] = " # Elem3 # " (expected: 3)"}
-   {System.showInfo "M1[2,2] = " # Elem4 # " (expected: 4)"}
-end
+% local Elem1 Elem2 Elem3 Elem4 in
+%    {M1 getElement(1 1 Elem1)}  % Should return 1
+%    {M1 getElement(1 2 Elem2)}  % Should return 2
+%    {M1 getElement(2 1 Elem3)}  % Should return 3
+%    {M1 getElement(2 2 Elem4)}  % Should return 4
+%    {System.showInfo "M1[1,1] = " # Elem1 # " (expected: 1)"}
+%    {System.showInfo "M1[1,2] = " # Elem2 # " (expected: 2)"}
+%    {System.showInfo "M1[2,1] = " # Elem3 # " (expected: 3)"}
+%    {System.showInfo "M1[2,2] = " # Elem4 # " (expected: 4)"}
+% end
 
-% Test invalid elements (should return 142857)
-local Invalid1 Invalid2 Invalid3 in
-   {M1 getElement(0 1 Invalid1)}  % Invalid row
-   {M1 getElement(1 0 Invalid2)}  % Invalid column
-   {M1 getElement(3 1 Invalid3)}  % Row out of bounds
-   {System.showInfo "M1[0,1] = " # Invalid1 # " (expected: 142857)"}
-   {System.showInfo "M1[1,0] = " # Invalid2 # " (expected: 142857)"}
-   {System.showInfo "M1[3,1] = " # Invalid3 # " (expected: 142857)"}
-end
+% local Invalid1 Invalid2 Invalid3 in
+%    {M1 getElement(0 1 Invalid1)}  % Invalid row
+%    {M1 getElement(1 0 Invalid2)}  % Invalid column
+%    {M1 getElement(3 1 Invalid3)}  % Row out of bounds
+%    {System.showInfo "M1[0,1] = " # Invalid1 # " (expected: 142857)"}
+%    {System.showInfo "M1[1,0] = " # Invalid2 # " (expected: 142857)"}
+%    {System.showInfo "M1[3,1] = " # Invalid3 # " (expected: 142857)"}
+% end
 
-%% Test 3: getRow method
-{System.showInfo "\n=== TEST 3: getRow method ==="}
+% {System.showInfo "\n=== TEST 3: getRow method ==="}
 
-% Test valid rows
-local Row1 Row2 Row3 in
-   {M2 getRow(1 Row1)}  % Should return [1 2 3]
-   {M2 getRow(2 Row2)}  % Should return [4 5 6]
-   {M2 getRow(3 Row3)}  % Should return [7 8 9]
-   {System.showInfo "M2 Row 1: " # {Value.toVirtualString Row1 10 10}}
-   {System.showInfo "M2 Row 2: " # {Value.toVirtualString Row2 10 10}}
-   {System.showInfo "M2 Row 3: " # {Value.toVirtualString Row3 10 10}}
-end
+% local Row1 Row2 Row3 in
+%    {M2 getRow(1 Row1)}  % Should return [1 2 3]
+%    {M2 getRow(2 Row2)}  % Should return [4 5 6]
+%    {M2 getRow(3 Row3)}  % Should return [7 8 9]
+%    {System.showInfo "M2 Row 1: " # {Value.toVirtualString Row1 10 10}}
+%    {System.showInfo "M2 Row 2: " # {Value.toVirtualString Row2 10 10}}
+%    {System.showInfo "M2 Row 3: " # {Value.toVirtualString Row3 10 10}}
+% end
 
-% Test invalid row (should return 142857)
-local InvalidRow in
-   {M2 getRow(4 InvalidRow)}  % Row out of bounds
-   {System.showInfo "M2 Row 4: " # InvalidRow # " (expected: 142857)"}
-end
+% local InvalidRow in
+%    {M2 getRow(4 InvalidRow)}  % Row out of bounds
+%    {System.showInfo "M2 Row 4: " # InvalidRow # " (expected: 142857)"}
+% end
 
-%% Test 4: getColumn method
-{System.showInfo "\n=== TEST 4: getColumn method ==="}
+% {System.showInfo "\n=== TEST 4: getColumn method ==="}
 
-% Test valid columns
-local Col1 Col2 Col3 in
-   {M2 getColumn(1 Col1)}  % Should return [1 4 7]
-   {M2 getColumn(2 Col2)}  % Should return [2 5 8]
-   {M2 getColumn(3 Col3)}  % Should return [3 6 9]
-   {System.showInfo "M2 Col 1: " # {Value.toVirtualString Col1 10 10}}
-   {System.showInfo "M2 Col 2: " # {Value.toVirtualString Col2 10 10}}
-   {System.showInfo "M2 Col 3: " # {Value.toVirtualString Col3 10 10}}
-end
+% local Col1 Col2 Col3 in
+%    {M2 getColumn(1 Col1)}  % Should return [1 4 7]
+%    {M2 getColumn(2 Col2)}  % Should return [2 5 8]
+%    {M2 getColumn(3 Col3)}  % Should return [3 6 9]
+%    {System.showInfo "M2 Col 1: " # {Value.toVirtualString Col1 10 10}}
+%    {System.showInfo "M2 Col 2: " # {Value.toVirtualString Col2 10 10}}
+%    {System.showInfo "M2 Col 3: " # {Value.toVirtualString Col3 10 10}}
+% end
 
-% Test invalid column (should return 142857)
-local InvalidCol in
-   {M2 getColumn(4 InvalidCol)}  % Column out of bounds
-   {System.showInfo "M2 Col 4: " # InvalidCol # " (expected: 142857)"}
-end
+% local InvalidCol in
+%    {M2 getColumn(4 InvalidCol)}  % Column out of bounds
+%    {System.showInfo "M2 Col 4: " # InvalidCol # " (expected: 142857)"}
+% end
 
-%% Test 5: sumRow method
-{System.showInfo "\n=== TEST 5: sumRow method ==="}
+% {System.showInfo "\n=== TEST 5: sumRow method ==="}
 
-% Test valid rows
-local Sum1 Sum2 Sum3 in
-   {M1 sumRow(1 Sum1)}  % Should return 1+2 = 3
-   {M1 sumRow(2 Sum2)}  % Should return 3+4 = 7
-   {M2 sumRow(1 Sum3)}  % Should return 1+2+3 = 6
-   {System.showInfo "M1 Row 1 sum: " # Sum1 # " (expected: 3)"}
-   {System.showInfo "M1 Row 2 sum: " # Sum2 # " (expected: 7)"}
-   {System.showInfo "M2 Row 1 sum: " # Sum3 # " (expected: 6)"}
-end
+% local Sum1 Sum2 Sum3 in
+%    {M1 sumRow(1 Sum1)}  % Should return 1+2 = 3
+%    {M1 sumRow(2 Sum2)}  % Should return 3+4 = 7
+%    {M2 sumRow(1 Sum3)}  % Should return 1+2+3 = 6
+%    {System.showInfo "M1 Row 1 sum: " # Sum1 # " (expected: 3)"}
+%    {System.showInfo "M1 Row 2 sum: " # Sum2 # " (expected: 7)"}
+%    {System.showInfo "M2 Row 1 sum: " # Sum3 # " (expected: 6)"}
+% end
 
-% Test invalid row (should return 142857)
-local InvalidSum in
-   {M1 sumRow(3 InvalidSum)}  % Row out of bounds
-   {System.showInfo "M1 Row 3 sum: " # InvalidSum # " (expected: 142857)"}
-end
+% local InvalidSum in
+%    {M1 sumRow(3 InvalidSum)}  % Row out of bounds
+%    {System.showInfo "M1 Row 3 sum: " # InvalidSum # " (expected: 142857)"}
+% end
 
-%% Test 6: productRow method
-{System.showInfo "\n=== TEST 6: productRow method ==="}
+% {System.showInfo "\n=== TEST 6: productRow method ==="}
 
-% Test valid rows
-local Prod1 Prod2 Prod3 in
-   {M1 productRow(1 Prod1)}  % Should return 1*2 = 2
-   {M1 productRow(2 Prod2)}  % Should return 3*4 = 12
-   {M2 productRow(1 Prod3)}  % Should return 1*2*3 = 6
-   {System.showInfo "M1 Row 1 product: " # Prod1 # " (expected: 2)"}
-   {System.showInfo "M1 Row 2 product: " # Prod2 # " (expected: 12)"}
-   {System.showInfo "M2 Row 1 product: " # Prod3 # " (expected: 6)"}
-end
+% local Prod1 Prod2 Prod3 in
+%    {M1 productRow(1 Prod1)}  % Should return 1*2 = 2
+%    {M1 productRow(2 Prod2)}  % Should return 3*4 = 12
+%    {M2 productRow(1 Prod3)}  % Should return 1*2*3 = 6
+%    {System.showInfo "M1 Row 1 product: " # Prod1 # " (expected: 2)"}
+%    {System.showInfo "M1 Row 2 product: " # Prod2 # " (expected: 12)"}
+%    {System.showInfo "M2 Row 1 product: " # Prod3 # " (expected: 6)"}
+% end
 
-% Test invalid row (should return 142857)
-local InvalidProd in
-   {M1 productRow(3 InvalidProd)}  % Row out of bounds
-   {System.showInfo "M1 Row 3 product: " # InvalidProd # " (expected: 142857)"}
-end
+% local InvalidProd in
+%    {M1 productRow(3 InvalidProd)}  % Row out of bounds
+%    {System.showInfo "M1 Row 3 product: " # InvalidProd # " (expected: 142857)"}
+% end
 
-%% Test 7: sumColumn method
-{System.showInfo "\n=== TEST 7: sumColumn method ==="}
+% {System.showInfo "\n=== TEST 7: sumColumn method ==="}
 
-% Test valid columns
-local ColSum1 ColSum2 ColSum3 in
-   {M1 sumColumn(1 ColSum1)}  % Should return 1+3 = 4
-   {M1 sumColumn(2 ColSum2)}  % Should return 2+4 = 6
-   {M2 sumColumn(1 ColSum3)}  % Should return 1+4+7 = 12
-   {System.showInfo "M1 Col 1 sum: " # ColSum1 # " (expected: 4)"}
-   {System.showInfo "M1 Col 2 sum: " # ColSum2 # " (expected: 6)"}
-   {System.showInfo "M2 Col 1 sum: " # ColSum3 # " (expected: 12)"}
-end
+% local ColSum1 ColSum2 ColSum3 in
+%    {M1 sumColumn(1 ColSum1)}  % Should return 1+3 = 4
+%    {M1 sumColumn(2 ColSum2)}  % Should return 2+4 = 6
+%    {M2 sumColumn(1 ColSum3)}  % Should return 1+4+7 = 12
+%    {System.showInfo "M1 Col 1 sum: " # ColSum1 # " (expected: 4)"}
+%    {System.showInfo "M1 Col 2 sum: " # ColSum2 # " (expected: 6)"}
+%    {System.showInfo "M2 Col 1 sum: " # ColSum3 # " (expected: 12)"}
+% end
 
-% Test invalid column (should return 142857)
-local InvalidColSum in
-   {M1 sumColumn(3 InvalidColSum)}  % Column out of bounds
-   {System.showInfo "M1 Col 3 sum: " # InvalidColSum # " (expected: 142857)"}
-end
+% local InvalidColSum in
+%    {M1 sumColumn(3 InvalidColSum)}  % Column out of bounds
+%    {System.showInfo "M1 Col 3 sum: " # InvalidColSum # " (expected: 142857)"}
+% end
 
-%% Test 8: productColumn method
-{System.showInfo "\n=== TEST 8: productColumn method ==="}
+% {System.showInfo "\n=== TEST 8: productColumn method ==="}
 
-% Test valid columns
-local ColProd1 ColProd2 ColProd3 in
-   {M1 productColumn(1 ColProd1)}  % Should return 1*3 = 3
-   {M1 productColumn(2 ColProd2)}  % Should return 2*4 = 8
-   {M2 productColumn(1 ColProd3)}  % Should return 1*4*7 = 28
-   {System.showInfo "M1 Col 1 product: " # ColProd1 # " (expected: 3)"}
-   {System.showInfo "M1 Col 2 product: " # ColProd2 # " (expected: 8)"}
-   {System.showInfo "M2 Col 1 product: " # ColProd3 # " (expected: 28)"}
-end
+% local ColProd1 ColProd2 ColProd3 in
+%    {M1 productColumn(1 ColProd1)}  % Should return 1*3 = 3
+%    {M1 productColumn(2 ColProd2)}  % Should return 2*4 = 8
+%    {M2 productColumn(1 ColProd3)}  % Should return 1*4*7 = 28
+%    {System.showInfo "M1 Col 1 product: " # ColProd1 # " (expected: 3)"}
+%    {System.showInfo "M1 Col 2 product: " # ColProd2 # " (expected: 8)"}
+%    {System.showInfo "M2 Col 1 product: " # ColProd3 # " (expected: 28)"}
+% end
 
-% Test invalid column (should return 142857)
-local InvalidColProd in
-   {M1 productColumn(3 InvalidColProd)}  % Column out of bounds
-   {System.showInfo "M1 Col 3 product: " # InvalidColProd # " (expected: 142857)"}
-end
+% local InvalidColProd in
+%    {M1 productColumn(3 InvalidColProd)}  % Column out of bounds
+%    {System.showInfo "M1 Col 3 product: " # InvalidColProd # " (expected: 142857)"}
+% end
 
-%% Test 9: sumAll method
-{System.showInfo "\n=== TEST 9: sumAll method ==="}
+% {System.showInfo "\n=== TEST 9: sumAll method ==="}
 
-% Test sum of all elements
-local TotalSum1 TotalSum2 TotalSum3 in
-   {M1 sumAll(TotalSum1)}  % Should return 1+2+3+4 = 10
-   {M2 sumAll(TotalSum2)}  % Should return 1+2+3+4+5+6+7+8+9 = 45
-   {M3 sumAll(TotalSum3)}  % Should return 5
-   {System.showInfo "M1 total sum: " # TotalSum1 # " (expected: 10)"}
-   {System.showInfo "M2 total sum: " # TotalSum2 # " (expected: 45)"}
-   {System.showInfo "M3 total sum: " # TotalSum3 # " (expected: 5)"}
-end
+% local TotalSum1 TotalSum2 TotalSum3 in
+%    {M1 sumAll(TotalSum1)}  % Should return 1+2+3+4 = 10
+%    {M2 sumAll(TotalSum2)}  % Should return 1+2+3+4+5+6+7+8+9 = 45
+%    {M3 sumAll(TotalSum3)}  % Should return 5
+%    {System.showInfo "M1 total sum: " # TotalSum1 # " (expected: 10)"}
+%    {System.showInfo "M2 total sum: " # TotalSum2 # " (expected: 45)"}
+%    {System.showInfo "M3 total sum: " # TotalSum3 # " (expected: 5)"}
+% end
 
-%% Test 10: productAll method
-{System.showInfo "\n=== TEST 10: productAll method ==="}
+% {System.showInfo "\n=== TEST 10: productAll method ==="}
 
-% Test product of all elements
-local TotalProd1 TotalProd2 TotalProd3 in
-   {M1 productAll(TotalProd1)}  % Should return 1*2*3*4 = 24
-   {M2 productAll(TotalProd2)}  % Should return 1*2*3*4*5*6*7*8*9 = 362880
-   {M3 productAll(TotalProd3)}  % Should return 5
-   {System.showInfo "M1 total product: " # TotalProd1 # " (expected: 24)"}
-   {System.showInfo "M2 total product: " # TotalProd2 # " (expected: 362880)"}
-   {System.showInfo "M3 total product: " # TotalProd3 # " (expected: 5)"}
-end
+% local TotalProd1 TotalProd2 TotalProd3 in
+%    {M1 productAll(TotalProd1)}  % Should return 1*2*3*4 = 24
+%    {M2 productAll(TotalProd2)}  % Should return 1*2*3*4*5*6*7*8*9 = 362880
+%    {M3 productAll(TotalProd3)}  % Should return 5
+%    {System.showInfo "M1 total product: " # TotalProd1 # " (expected: 24)"}
+%    {System.showInfo "M2 total product: " # TotalProd2 # " (expected: 362880)"}
+%    {System.showInfo "M3 total product: " # TotalProd3 # " (expected: 5)"}
+% end
 
-%% Test 11: display method
-{System.showInfo "\n=== TEST 11: display method ==="}
+% {System.showInfo "\n=== TEST 11: display method ==="}
 
-{System.showInfo "Displaying M1:"}
-{M1 display()}
+% {System.showInfo "Displaying M1:"}
+% {M1 display()}
 
-{System.showInfo "\nDisplaying M2:"}
-{M2 display()}
+% {System.showInfo "\nDisplaying M2:"}
+% {M2 display()}
 
-{System.showInfo "\nDisplaying M3:"}
-{M3 display()}
+% {System.showInfo "\nDisplaying M3:"}
+% {M3 display()}
 
-%% Test 12: Edge Cases and Error Handling
-{System.showInfo "\n=== TEST 12: Edge Cases and Error Handling ==="}
+% {System.showInfo "\n=== TEST 12: Edge Cases and Error Handling ==="}
 
-% Test with matrix containing zeros
-M4 = {New Matrix init([[0 1] [2 0]])}
-local ZeroSum ZeroProd in
-   {M4 sumAll(ZeroSum)}  % Should return 0+1+2+0 = 3
-   {M4 productAll(ZeroProd)}  % Should return 0*1*2*0 = 0
-   {System.showInfo "M4 (with zeros) sum: " # ZeroSum # " (expected: 3)"}
-   {System.showInfo "M4 (with zeros) product: " # ZeroProd # " (expected: 0)"}
-end
+% M4 = {New Matrix init([[0 1] [2 0]])}
+% local ZeroSum ZeroProd in
+%    {M4 sumAll(ZeroSum)}  % Should return 0+1+2+0 = 3
+%    {M4 productAll(ZeroProd)}  % Should return 0*1*2*0 = 0
+%    {System.showInfo "M4 (with zeros) sum: " # ZeroSum # " (expected: 3)"}
+%    {System.showInfo "M4 (with zeros) product: " # ZeroProd # " (expected: 0)"}
+% end
 
-% Test with matrix containing negative numbers
-M5 = {New Matrix init([[~1 2] [~3 4]])}
-local NegSum NegProd in
-   {M5 sumAll(NegSum)}  % Should return -1+2-3+4 = 2
-   {M5 productAll(NegProd)}  % Should return -1*2*-3*4 = 24
-   {System.showInfo "M5 (with negatives) sum: " # NegSum # " (expected: 2)"}
-   {System.showInfo "M5 (with negatives) product: " # NegProd # " (expected: 24)"}
-end
+% M5 = {New Matrix init([[~1 2] [~3 4]])}
+% local NegSum NegProd in
+%    {M5 sumAll(NegSum)}  % Should return -1+2-3+4 = 2
+%    {M5 productAll(NegProd)}  % Should return -1*2*-3*4 = 24
+%    {System.showInfo "M5 (with negatives) sum: " # NegSum # " (expected: 2)"}
+%    {System.showInfo "M5 (with negatives) product: " # NegProd # " (expected: 24)"}
+% end
 
-% Test boundary conditions
-local Boundary1 Boundary2 Boundary3 in
-   {M2 getElement(1 1 Boundary1)}  % First element
-   {M2 getElement(3 3 Boundary2)}  % Last element
-   {M2 getElement(2 2 Boundary3)}  % Middle element
-   {System.showInfo "M2[1,1] (first): " # Boundary1 # " (expected: 1)"}
-   {System.showInfo "M2[3,3] (last): " # Boundary2 # " (expected: 9)"}
-   {System.showInfo "M2[2,2] (middle): " # Boundary3 # " (expected: 5)"}
-end
+% local Boundary1 Boundary2 Boundary3 in
+%    {M2 getElement(1 1 Boundary1)}  % First element
+%    {M2 getElement(3 3 Boundary2)}  % Last element
+%    {M2 getElement(2 2 Boundary3)}  % Middle element
+%    {System.showInfo "M2[1,1] (first): " # Boundary1 # " (expected: 1)"}
+%    {System.showInfo "M2[3,3] (last): " # Boundary2 # " (expected: 9)"}
+%    {System.showInfo "M2[2,2] (middle): " # Boundary3 # " (expected: 5)"}
+% end
 
-%% Test 13: Large Matrix Test
-{System.showInfo "\n=== TEST 13: Large Matrix Test ==="}
+% {System.showInfo "\n=== TEST 13: Large Matrix Test ==="}
 
-% Create a 4x4 matrix
-M6 = {New Matrix init([[1 2 3 4] [5 6 7 8] [9 10 11 12] [13 14 15 16]])}
-local LargeSize LargeSum LargeProd in
-   {M6 getSize(LargeSize)}
-   {M6 sumAll(LargeSum)}
-   {M6 productAll(LargeProd)}
-   {System.showInfo "M6 size: " # LargeSize # " (expected: 4)"}
-   {System.showInfo "M6 total sum: " # LargeSum # " (expected: 136)"}
-   {System.showInfo "M6 total product: " # LargeProd # " (expected: 20922789888000)"}
-end
+% M6 = {New Matrix init([[1 2 3 4] [5 6 7 8] [9 10 11 12] [13 14 15 16]])}
+% local LargeSize LargeSum LargeProd in
+%    {M6 getSize(LargeSize)}
+%    {M6 sumAll(LargeSum)}
+%    {M6 productAll(LargeProd)}
+%    {System.showInfo "M6 size: " # LargeSize # " (expected: 4)"}
+%    {System.showInfo "M6 total sum: " # LargeSum # " (expected: 136)"}
+%    {System.showInfo "M6 total product: " # LargeProd # " (expected: 20922789888000)"}
+% end
 
-{System.showInfo "\n=== ALL MATRIX TESTS COMPLETED ==="}
+% {System.showInfo "\n=== ALL MATRIX TESTS COMPLETED ==="}
