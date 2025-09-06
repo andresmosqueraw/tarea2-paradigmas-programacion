@@ -71,19 +71,29 @@ class MastermindGame
             GameOver = GameWon orelse RoundNo >= @maxRounds
             {@codebreaker receiveFeedback(Guess FeedbackResult)}
 
-            if (GameWon orelse GameOver) then
-               gameStatus := 'finished'
+            %% 1) Reflejar exactamente los estados documentados: 'won' / 'lost'
+            if GameWon then
+               gameStatus := 'won'
+            elseif GameOver then
+               gameStatus := 'lost'
             else
                currentRound := RoundNo + 1
             end
 
+            %% 2) Construir el resultado según los comentarios
             Result = result(
                guess: Guess
                feedback: Feedback
-               roundNumber: RoundNo   % <-- ahora coincide con el comentario
+               roundNumber: RoundNo
                gameWon: GameWon
                gameOver: GameOver
             )
+
+            %% 3) Cumplir la precondición de startGame ('ready'|'finished'):
+            %%    si terminó la partida, dejar el estado en 'finished'
+            if GameWon orelse GameOver then
+               gameStatus := 'finished'
+            end
          end
       else
          Result = result(
