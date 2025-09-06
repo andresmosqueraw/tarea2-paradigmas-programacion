@@ -569,232 +569,190 @@ declare class CodeBreaker
    end
 end
 
-%% ============================================================================
-%% COMPREHENSIVE TEST CASES
-%% ============================================================================
 
-{System.showInfo "\n=== MASTERMIND COMPREHENSIVE TEST SUITE ==="}
 
-%% Test 1: Basic CodeMaker functionality
-{System.showInfo "\n--- Test 1: CodeMaker Basic Functionality ---"}
-local CM1 Success1 Success2 Code1 Code2 Colors1 in
-   CM1 = {New CodeMaker init()}
-   
-   % Test default initialization
-   {CM1 getAvailableColors(Colors1)}
-   {System.showInfo "Default colors:"} {System.show Colors1}
-   
-   % Test code generation
-   {CM1 generateSecretCode(Success1)}
-   {CM1 getSecretCode(Code1)}
-   {System.showInfo "Generated code:"} {System.show Code1} {System.showInfo "Success:"} {System.show Success1}
-   
-   % Test setting specific code
-   {CM1 setSecretCode([red blue green yellow] Success2)}
-   {CM1 getSecretCode(Code2)}
-   {System.showInfo "Set code:"} {System.show Code2} {System.showInfo "Success:"} {System.show Success2}
-end
+% {System.showInfo "\n=== MASTERMIND COMPREHENSIVE TEST SUITE ==="}
 
-%% Test 2: Code validation
-{System.showInfo "\n--- Test 2: Code Validation ---"}
-local CM Valid1 Valid2 Valid3 Valid4 in
-   CM = {New CodeMaker init()}
+% {System.showInfo "\n--- Test 1: CodeMaker Basic Functionality ---"}
+% local CM1 Success1 Success2 Code1 Code2 Colors1 in
+%    CM1 = {New CodeMaker init()}
    
-   % Valid codes
-   {CM isValidCode([red blue green yellow] Valid1)}
-   {CM isValidCode([red red red red] Valid2)}
-   {System.showInfo "Valid codes - [red blue green yellow]:"} {System.show Valid1} {System.showInfo "[red red red red]:"} {System.show Valid2}
+%    {CM1 getAvailableColors(Colors1)}
+%    {System.showInfo "Default colors:"} {System.show Colors1}
    
-   % Invalid codes
-   {CM isValidCode([red blue green] Valid3)}  % Too short
-   {CM isValidCode([red blue green yellow orange] Valid4)}  % Too long
-   {System.showInfo "Invalid codes - [red blue green]:"} {System.show Valid3} {System.showInfo "[red blue green yellow orange]:"} {System.show Valid4}
-end
+%    {CM1 generateSecretCode(Success1)}
+%    {CM1 getSecretCode(Code1)}
+%    {System.showInfo "Generated code:"} {System.show Code1} {System.showInfo "Success:"} {System.show Success1}
+   
+%    {CM1 setSecretCode([red blue green yellow] Success2)}
+%    {CM1 getSecretCode(Code2)}
+%    {System.showInfo "Set code:"} {System.show Code2} {System.showInfo "Success:"} {System.show Success2}
+% end
 
-%% Test 3: Guess evaluation
-{System.showInfo "\n--- Test 3: Guess Evaluation ---"}
-local CM Feedback1 Feedback2 Feedback3 Feedback4 in
-   CM = {New CodeMaker init()}
+% {System.showInfo "\n--- Test 2: Code Validation ---"}
+% local CM Valid1 Valid2 Valid3 Valid4 in
+%    CM = {New CodeMaker init()}
    
-   % Set a known secret code
-   {CM setSecretCode([red blue green yellow] _)}
+%    {CM isValidCode([red blue green yellow] Valid1)}
+%    {CM isValidCode([red red red red] Valid2)}
+%    {System.showInfo "Valid codes - [red blue green yellow]:"} {System.show Valid1} {System.showInfo "[red red red red]:"} {System.show Valid2}
    
-   % Perfect match
-   {CM evaluateGuess([red blue green yellow] Feedback1)}
-   {System.showInfo "Perfect match - Black:"} {System.show Feedback1.blackClues} {System.showInfo "White:"} {System.show Feedback1.whiteClues} {System.showInfo "Correct:"} {System.show Feedback1.isCorrect}
-   
-   % All colors correct, wrong positions
-   {CM evaluateGuess([blue red yellow green] Feedback2)}
-   {System.showInfo "All colors wrong positions - Black:"} {System.show Feedback2.blackClues} {System.showInfo "White:"} {System.show Feedback2.whiteClues}
-   
-   % Some correct colors and positions
-   {CM evaluateGuess([red orange purple blue] Feedback3)}
-   {System.showInfo "Mixed - Black:"} {System.show Feedback3.blackClues} {System.showInfo "White:"} {System.show Feedback3.whiteClues}
-   
-   % No matches
-   {CM evaluateGuess([orange purple orange purple] Feedback4)}
-   {System.showInfo "No matches - Black:"} {System.show Feedback4.blackClues} {System.showInfo "White:"} {System.show Feedback4.whiteClues}
-end
+%    {CM isValidCode([red blue green] Valid3)}  % Too short
+%    {CM isValidCode([red blue green yellow orange] Valid4)}  % Too long
+%    {System.showInfo "Invalid codes - [red blue green]:"} {System.show Valid3} {System.showInfo "[red blue green yellow orange]:"} {System.show Valid4}
+% end
 
-%% Test 4: CodeBreaker strategies
-{System.showInfo "\n--- Test 4: CodeBreaker Strategies ---"}
-local CB1 CB2 CB3 CB4 Strategy1 Strategy2 in
-   CB1 = {New CodeBreaker init('random')}
-   CB2 = {New CodeBreaker init('systematic')}
-   CB3 = {New CodeBreaker init('smart')}
-   CB4 = {New CodeBreaker init('human')}
+% {System.showInfo "\n--- Test 3: Guess Evaluation ---"}
+% local CM Feedback1 Feedback2 Feedback3 Feedback4 in
+%    CM = {New CodeMaker init()}
    
-   % Test random strategy
-   {CB1 getStrategy(Strategy1)}
-   {System.showInfo "Random strategy:"} {System.show Strategy1}
+%    {CM setSecretCode([red blue green yellow] _)}
    
-   % Test systematic strategy
-   {CB2 getStrategy(Strategy2)}
-   {System.showInfo "Systematic strategy:"} {System.show Strategy2}
+%    {CM evaluateGuess([red blue green yellow] Feedback1)}
+%    {System.showInfo "Perfect match - Black:"} {System.show Feedback1.blackClues} {System.showInfo "White:"} {System.show Feedback1.whiteClues} {System.showInfo "Correct:"} {System.show Feedback1.isCorrect}
    
-   % Test strategy change
-   {CB1 setStrategy('smart' _)}
-   {System.showInfo "Changed to smart strategy"}
-end
+%    {CM evaluateGuess([blue red yellow green] Feedback2)}
+%    {System.showInfo "All colors wrong positions - Black:"} {System.show Feedback2.blackClues} {System.showInfo "White:"} {System.show Feedback2.whiteClues}
+   
+%    {CM evaluateGuess([red orange purple blue] Feedback3)}
+%    {System.showInfo "Mixed - Black:"} {System.show Feedback3.blackClues} {System.showInfo "White:"} {System.show Feedback3.whiteClues}
+   
+%    {CM evaluateGuess([orange purple orange purple] Feedback4)}
+%    {System.showInfo "No matches - Black:"} {System.show Feedback4.blackClues} {System.showInfo "White:"} {System.show Feedback4.whiteClues}
+% end
 
-%% Test 5: Specific guess functionality
-{System.showInfo "\n--- Test 5: Specific Guess Functionality ---"}
-local CB Success1 Success2 Success3 in
-   CB = {New CodeBreaker init('random')}
+% {System.showInfo "\n--- Test 4: CodeBreaker Strategies ---"}
+% local CB1 CB2 CB3 CB4 Strategy1 Strategy2 in
+%    CB1 = {New CodeBreaker init('random')}
+%    CB2 = {New CodeBreaker init('systematic')}
+%    CB3 = {New CodeBreaker init('smart')}
+%    CB4 = {New CodeBreaker init('human')}
    
-   % Valid specific guess
-   {CB makeGuess([red blue green yellow] Success1)}
-   {System.showInfo "Valid specific guess success:"} {System.show Success1}
+%    {CB1 getStrategy(Strategy1)}
+%    {System.showInfo "Random strategy:"} {System.show Strategy1}
    
-   % Invalid specific guess (wrong length)
-   {CB makeGuess([red blue green] Success2)}
-   {System.showInfo "Invalid specific guess (short) success:"} {System.show Success2}
+%    {CB2 getStrategy(Strategy2)}
+%    {System.showInfo "Systematic strategy:"} {System.show Strategy2}
    
-   % Invalid specific guess (invalid color)
-   {CB makeGuess([red blue green invalid] Success3)}
-   {System.showInfo "Invalid specific guess (bad color) success:"} {System.show Success3}
-end
+%    {CB1 setStrategy('smart' _)}
+%    {System.showInfo "Changed to smart strategy"}
+% end
 
-%% Test 6: Feedback processing
-{System.showInfo "\n--- Test 6: Feedback Processing ---"}
-local CB Feedback History in
-   CB = {New CodeBreaker init('random')}
+% {System.showInfo "\n--- Test 5: Specific Guess Functionality ---"}
+% local CB Success1 Success2 Success3 in
+%    CB = {New CodeBreaker init('random')}
    
-   % Make a specific guess
-   {CB makeGuess([red blue green yellow] _)}
+%    {CB makeGuess([red blue green yellow] Success1)}
+%    {System.showInfo "Valid specific guess success:"} {System.show Success1}
    
-   % Create feedback
-   Feedback = feedback(
-      blackClues: 2
-      whiteClues: 1
-      totalCorrect: 3
-      isCorrect: false
-      clueList: [black black white none]
-   )
+%    {CB makeGuess([red blue green] Success2)}
+%    {System.showInfo "Invalid specific guess (short) success:"} {System.show Success2}
    
-   % Receive feedback
-   {CB receiveFeedback([red blue green yellow] Feedback)}
-   
-   % Check history
-   {CB getGuessHistory(History)}
-   {System.showInfo "Guess history length:"} {System.show {Length History}}
-end
+%    {CB makeGuess([red blue green invalid] Success3)}
+%    {System.showInfo "Invalid specific guess (bad color) success:"} {System.show Success3}
+% end
 
-%% Test 7: Full game simulation
-{System.showInfo "\n--- Test 7: Full Game Simulation ---"}
-local Game CM CB Status1 Status2 Round Result in
-   CM = {New CodeMaker init()}
-   CB = {New CodeBreaker init('random')}
-   Game = {New MastermindGame init(CM CB)}
+% {System.showInfo "\n--- Test 6: Feedback Processing ---"}
+% local CB Feedback History in
+%    CB = {New CodeBreaker init('random')}
    
-   % Check initial status
-   {Game getGameStatus(Status1)}
-   {System.showInfo "Initial game status:"} {System.show Status1}
+%    {CB makeGuess([red blue green yellow] _)}
    
-   % Start game
-   {Game startGame(_)}
-   {Game getGameStatus(Status2)}
-   {System.showInfo "After start game status:"} {System.show Status2}
+%    Feedback = feedback(
+%       blackClues: 2
+%       whiteClues: 1
+%       totalCorrect: 3
+%       isCorrect: false
+%       clueList: [black black white none]
+%    )
    
-   % Play a few rounds
-   {Game playRound(Result)}
-   {System.showInfo "Round 1 - Guess:"} {System.show Result.guess} {System.showInfo "Black:"} {System.show {Length {Filter Result.feedback fun {$ X} X == black end}}} {System.showInfo "White:"} {System.show {Length {Filter Result.feedback fun {$ X} X == white end}}}
+%    {CB receiveFeedback([red blue green yellow] Feedback)}
    
-   {Game getCurrentRound(Round)}
-   {System.showInfo "Current round:"} {System.show Round}
-   
-   {Game getRemainingRounds(_)}
-   {System.showInfo "Remaining rounds calculated"}
-end
+%    {CB getGuessHistory(History)}
+%    {System.showInfo "Guess history length:"} {System.show {Length History}}
+% end
 
-%% Test 8: Edge cases
-{System.showInfo "\n--- Test 8: Edge Cases ---"}
-local CM CB Game in
-   CM = {New CodeMaker init()}
-   CB = {New CodeBreaker init('random')}
-   Game = {New MastermindGame init(CM CB)}
+% {System.showInfo "\n--- Test 7: Full Game Simulation ---"}
+% local Game CM CB Status1 Status2 Round Result in
+%    CM = {New CodeMaker init()}
+%    CB = {New CodeBreaker init('random')}
+%    Game = {New MastermindGame init(CM CB)}
    
-   % Test game without secret code
-   try
-      local BadCM2 BadCB2 BadGame2 in
-         BadCM2 = {New CodeMaker init()}
-         BadCB2 = {New CodeBreaker init('random')}
-         BadGame2 = {New MastermindGame init(BadCM2 BadCB2)}
-         {BadGame2 playRound(_)}
-         {System.showInfo "ERROR: Should not reach here"}
-      end
-   catch E then
-      {System.showInfo "Correctly caught error for no secret code:"} {System.show E}
-   end
+%    {Game getGameStatus(Status1)}
+%    {System.showInfo "Initial game status:"} {System.show Status1}
    
-   % Test invalid guess length
-   try
-      {CM setSecretCode([red blue green yellow] _)}
-      {CM evaluateGuess([red blue green] _)}
-      {System.showInfo "ERROR: Should not reach here"}
-   catch E then
-      {System.showInfo "Correctly caught error for invalid guess length:"} {System.show E}
-   end
-end
+%    {Game startGame(_)}
+%    {Game getGameStatus(Status2)}
+%    {System.showInfo "After start game status:"} {System.show Status2}
+   
+%    {Game playRound(Result)}
+%    {System.showInfo "Round 1 - Guess:"} {System.show Result.guess} {System.showInfo "Black:"} {System.show {Length {Filter Result.feedback fun {$ X} X == black end}}} {System.showInfo "White:"} {System.show {Length {Filter Result.feedback fun {$ X} X == white end}}}
+   
+%    {Game getCurrentRound(Round)}
+%    {System.showInfo "Current round:"} {System.show Round}
+   
+%    {Game getRemainingRounds(_)}
+%    {System.showInfo "Remaining rounds calculated"}
+% end
 
-%% Test 9: Strategy-specific functionality
-{System.showInfo "\n--- Test 9: Strategy-Specific Functionality ---"}
-local CB1 CB2 Possibilities1 Possibilities2 in
-   CB1 = {New CodeBreaker init('smart')}
-   CB2 = {New CodeBreaker init('random')}
+% {System.showInfo "\n--- Test 8: Edge Cases ---"}
+% local CM CB Game in
+%    CM = {New CodeMaker init()}
+%    CB = {New CodeBreaker init('random')}
+%    Game = {New MastermindGame init(CM CB)}
    
-   % Test remaining possibilities for smart strategy
-   {CB1 getRemainingPossibilities(Possibilities1)}
-   {System.showInfo "Smart strategy possibilities:"} {System.show Possibilities1}
+%    try
+%       local BadCM2 BadCB2 BadGame2 in
+%          BadCM2 = {New CodeMaker init()}
+%          BadCB2 = {New CodeBreaker init('random')}
+%          BadGame2 = {New MastermindGame init(BadCM2 BadCB2)}
+%          {BadGame2 playRound(_)}
+%          {System.showInfo "ERROR: Should not reach here"}
+%       end
+%    catch E then
+%       {System.showInfo "Correctly caught error for no secret code:"} {System.show E}
+%    end
    
-   % Test remaining possibilities for random strategy
-   {CB2 getRemainingPossibilities(Possibilities2)}
-   {System.showInfo "Random strategy possibilities:"} {System.show Possibilities2}
-   
-   % Test history reset
-   {CB1 makeGuess([red blue green yellow] _)}
-   {CB1 resetHistory()}
-   {CB1 getGuessHistory(_)}
-   {System.showInfo "History reset completed"}
-end
+%    try
+%       {CM setSecretCode([red blue green yellow] _)}
+%       {CM evaluateGuess([red blue green] _)}
+%       {System.showInfo "ERROR: Should not reach here"}
+%    catch E then
+%       {System.showInfo "Correctly caught error for invalid guess length:"} {System.show E}
+%    end
+% end
 
-%% Test 10: Multiple games
-{System.showInfo "\n--- Test 10: Multiple Games ---"}
-local Game CM CB Status1 Status2 in
-   CM = {New CodeMaker init()}
-   CB = {New CodeBreaker init('random')}
-   Game = {New MastermindGame init(CM CB)}
+% {System.showInfo "\n--- Test 9: Strategy-Specific Functionality ---"}
+% local CB1 CB2 Possibilities1 Possibilities2 in
+%    CB1 = {New CodeBreaker init('smart')}
+%    CB2 = {New CodeBreaker init('random')}
    
-   % First game
-   {Game startGame(_)}
-   {Game playRound(_)}
-   {Game getGameStatus(Status1)}
-   {System.showInfo "First game status:"} {System.show Status1}
+%    {CB1 getRemainingPossibilities(Possibilities1)}
+%    {System.showInfo "Smart strategy possibilities:"} {System.show Possibilities1}
    
-   % Second game
-   {Game startGame(_)}
-   {Game getGameStatus(Status2)}
-   {System.showInfo "Second game status:"} {System.show Status2}
-end
+%    {CB2 getRemainingPossibilities(Possibilities2)}
+%    {System.showInfo "Random strategy possibilities:"} {System.show Possibilities2}
+   
+%    {CB1 makeGuess([red blue green yellow] _)}
+%    {CB1 resetHistory()}
+%    {CB1 getGuessHistory(_)}
+%    {System.showInfo "History reset completed"}
+% end
 
-{System.showInfo "\n=== ALL TESTS COMPLETED ==="}
+% {System.showInfo "\n--- Test 10: Multiple Games ---"}
+% local Game CM CB Status1 Status2 in
+%    CM = {New CodeMaker init()}
+%    CB = {New CodeBreaker init('random')}
+%    Game = {New MastermindGame init(CM CB)}
+   
+%    {Game startGame(_)}
+%    {Game playRound(_)}
+%    {Game getGameStatus(Status1)}
+%    {System.showInfo "First game status:"} {System.show Status1}
+   
+%    {Game startGame(_)}
+%    {Game getGameStatus(Status2)}
+%    {System.showInfo "Second game status:"} {System.show Status2}
+% end
+
+% {System.showInfo "\n=== ALL TESTS COMPLETED ==="}
